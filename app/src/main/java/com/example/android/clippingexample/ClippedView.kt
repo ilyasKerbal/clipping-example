@@ -40,6 +40,13 @@ class ClippedView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private val rowFour = rowThree + rectInset + clipRectBottom
     private val textRow = rowFour + (1.5f * clipRectBottom)
 
+    private var rectF = RectF(
+        rectInset,
+        rectInset,
+        clipRectRight - rectInset,
+        clipRectBottom - rectInset
+    )
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
@@ -183,6 +190,16 @@ class ClippedView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     private fun drawRoundedRectangleClippingExample(canvas: Canvas) {
+        canvas.save()
+        canvas.translate(columnTwo,rowThree)
+        path.rewind()
+        path.addRoundRect(
+            rectF,clipRectRight / 4,
+            clipRectRight / 4, Path.Direction.CCW
+        )
+        canvas.clipPath(path)
+        drawClippedRectangle(canvas)
+        canvas.restore()
     }
 
     private fun drawOutsideClippingExample(canvas: Canvas) {
